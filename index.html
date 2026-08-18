@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TruthBot | 24/7 Autonomous Legal Terms & Conditions Watchdog</title>
+    <meta name="description" content="Autonomous AI watchdog powered by CockroachDB vector memory and AWS Bedrock that continuously monitors Terms of Service agreements and alerts you to predatory clauses and stealth edits." />
+    <link rel="icon" type="image/png" href="/assets/truthbot-mascot.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <div id="error-display" style="color: red; background: white; padding: 20px; font-family: monospace; display: none; z-index: 9999; position: fixed; top: 0; left: 0; width: 100%;"></div>
+    <script>
+      window.onerror = function(message, source, lineno, colno, error) {
+        document.getElementById('root').style.display = 'none';
+        var errorDisplay = document.getElementById('error-display');
+        errorDisplay.style.display = 'block';
+        errorDisplay.innerHTML = '<h2>Application Crash</h2><p>' + message + '</p><pre>' + (error && error.stack ? error.stack : '') + '</pre>';
+      };
+    </script>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
