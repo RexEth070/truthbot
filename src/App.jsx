@@ -128,27 +128,49 @@ export default function App() {
 
   // Toggle Browser Push Notification Permission
   const handleToggleNotifications = async () => {
+    // If currently enabled, let the user logically toggle them off in the app state
+    if (notificationsEnabled) {
+      setNotificationsEnabled(false);
+      alert('Push alerts paused. TruthBot will not send you browser notifications.');
+      return;
+    }
+
     if (!('Notification' in window)) {
-      console.warn('This browser does not support desktop push notifications.');
+      alert('Your browser does not support web push notifications. Note: iOS Safari requires adding the app to your Home Screen first.');
+      return;
+    }
+
+    if (Notification.permission === 'denied') {
+      alert('Notifications are currently blocked. Please allow notifications for this site in your browser settings.');
       return;
     }
 
     if (Notification.permission === 'granted') {
       setNotificationsEnabled(true);
-      new Notification('🛡️ TruthBot Sentinel Active', {
-        body: 'You are protected 24/7 against stealth contractual alterations.',
-        icon: '/assets/truthbot-mascot.png'
-      });
-    } else {
-      const permission = await Notification.requestPermission();
-      if (permission === 'granted') {
-        setNotificationsEnabled(true);
+      try {
         new Notification('🛡️ TruthBot Sentinel Active', {
           body: 'You are protected 24/7 against stealth contractual alterations.',
           icon: '/assets/truthbot-mascot.png'
         });
-      } else {
-        console.warn('Notification permission was denied in browser settings.');
+        alert('Push alerts enabled successfully!');
+      } catch (e) {
+        alert('Push alerts enabled, but your device may restrict displaying them unless added to the Home Screen.');
+      }
+    } else {
+      try {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+          setNotificationsEnabled(true);
+          new Notification('🛡️ TruthBot Sentinel Active', {
+            body: 'You are protected 24/7 against stealth contractual alterations.',
+            icon: '/assets/truthbot-mascot.png'
+          });
+          alert('Push alerts enabled successfully!');
+        } else {
+          alert('Notification permission was denied. You will not receive push alerts.');
+        }
+      } catch (err) {
+        alert('An error occurred while requesting notification permissions.');
       }
     }
   };
