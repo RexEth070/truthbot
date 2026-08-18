@@ -588,3 +588,109 @@ h1, h2, h3, h4, h5 {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* ========================================================
+   MOBILE RESPONSIVENESS
+   ======================================================== */
+@media (max-width: 768px) {
+  /* Adjust Container Padding */
+  .container {
+    padding: 0 16px;
+  }
+  
+  /* Hero Section */
+  .hero-section {
+    padding: 60px 0 40px;
+  }
+  
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    text-align: center;
+  }
+  
+  .hero-headline {
+    font-size: 2.5rem;
+  }
+  
+  .hero-desc {
+    font-size: 1.1rem;
+    margin: 0 auto 32px;
+  }
+  
+  .hero-actions {
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .cta-btn-primary, .cta-btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Navbar */
+  .nav-content {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .nav-links {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  /* Welcome Banner */
+  .welcome-banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 24px 16px;
+    gap: 16px;
+  }
+  
+  .welcome-left {
+    flex-direction: column;
+  }
+  
+  .notification-toggle-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* URL Bar */
+  .url-bar-container {
+    flex-direction: column;
+    border-radius: var(--radius-md);
+    padding: 12px;
+  }
+  
+  .url-input {
+    width: 100%;
+    text-align: center;
+    padding: 8px 0;
+  }
+  
+  .url-submit-btn {
+    width: 100%;
+  }
+
+  /* Modals */
+  .modal-card {
+    padding: 24px;
+    max-height: 95vh;
+  }
+  
+  .modal-header-section {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .modal-header-title {
+    font-size: 1.2rem;
+  }
+  
+  .diff-old, .diff-new {
+    flex-direction: column;
+  }
+}
