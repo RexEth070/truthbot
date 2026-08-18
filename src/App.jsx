@@ -21,8 +21,8 @@ export default function App() {
     const fetchMemory = async () => {
       try {
         const [agreementsRes, alertsRes] = await Promise.all([
-          fetch('/api/agreements'),
-          fetch('/api/alerts')
+          fetch('https://truthbot-3hfi.onrender.com/api/agreements'),
+          fetch('https://truthbot-3hfi.onrender.com/api/alerts')
         ]);
         
         if (agreementsRes.ok) {
@@ -67,7 +67,7 @@ export default function App() {
 
   // Connect to SSE Live Watchdog Stream
   useEffect(() => {
-    const eventSource = new EventSource('/api/sentinel/stream');
+    const eventSource = new EventSource('https://truthbot-3hfi.onrender.com/api/sentinel/stream');
 
     eventSource.onmessage = (e) => {
       try {
@@ -110,7 +110,7 @@ export default function App() {
   const handleAnalyzeUrl = async (url) => {
     setLoading(true);
     try {
-      const res = await fetch('/api/analyze', {
+      const res = await fetch('https://truthbot-3hfi.onrender.com/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url })
