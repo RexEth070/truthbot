@@ -55,10 +55,13 @@ export default function App() {
   
   const [selectedAlert, setSelectedAlert] = useState(null);
 
-  // Check browser notification permission on mount
+  // Check browser notification permission and register Service Worker on mount
   useEffect(() => {
     if ('Notification' in window && Notification.permission === 'granted') {
       setNotificationsEnabled(true);
+    }
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(err => console.warn('SW failed:', err));
     }
   }, []);
 
@@ -80,10 +83,17 @@ export default function App() {
           // Trigger Device / Browser Push Notification
           if ('Notification' in window && Notification.permission === 'granted') {
             const actionWord = data.updateType === 'UPDATE' ? 'updated' : 'changed';
-            new Notification(`${data.serviceName} ${actionWord} their T&C`, {
+            const title = `${data.serviceName} ${actionWord} their T&C`;
+            const options = {
               body: `${data.affectedCategories}\n\n${data.summary}`,
               icon: '/assets/truthbot-mascot.png'
-            });
+            };
+            
+            if ('serviceWorker' in navigator) {
+              navigator.serviceWorker.ready.then(reg => reg.showNotification(title, options));
+            } else {
+              new Notification(title, options);
+            }
           }
         }
       } catch (err) {
@@ -148,10 +158,19 @@ export default function App() {
     if (Notification.permission === 'granted') {
       setNotificationsEnabled(true);
       try {
-        new Notification('🛡️ TruthBot Sentinel Active', {
-          body: 'You are protected 24/7 against stealth contractual alterations.',
-          icon: '/assets/truthbot-mascot.png'
-        });
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.ready.then(reg => {
+            reg.showNotification('🛡️ TruthBot Sentinel Active', {
+              body: 'You are protected 24/7 against stealth contractual alterations.',
+              icon: '/assets/truthbot-mascot.png'
+            });
+          });
+        } else {
+          new Notification('🛡️ TruthBot Sentinel Active', {
+            body: 'You are protected 24/7 against stealth contractual alterations.',
+            icon: '/assets/truthbot-mascot.png'
+          });
+        }
         alert('Push alerts enabled successfully!');
       } catch (e) {
         alert('Push alerts enabled, but your device may restrict displaying them unless added to the Home Screen.');
@@ -161,10 +180,19 @@ export default function App() {
         const permission = await Notification.requestPermission();
         if (permission === 'granted') {
           setNotificationsEnabled(true);
-          new Notification('🛡️ TruthBot Sentinel Active', {
-            body: 'You are protected 24/7 against stealth contractual alterations.',
-            icon: '/assets/truthbot-mascot.png'
-          });
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.ready.then(reg => {
+              reg.showNotification('🛡️ TruthBot Sentinel Active', {
+                body: 'You are protected 24/7 against stealth contractual alterations.',
+                icon: '/assets/truthbot-mascot.png'
+              });
+            });
+          } else {
+            new Notification('🛡️ TruthBot Sentinel Active', {
+              body: 'You are protected 24/7 against stealth contractual alterations.',
+              icon: '/assets/truthbot-mascot.png'
+            });
+          }
           alert('Push alerts enabled successfully!');
         } else {
           alert('Notification permission was denied. You will not receive push alerts.');
